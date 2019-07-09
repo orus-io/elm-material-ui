@@ -46,9 +46,9 @@ thumbnailStory : Story (Maybe (Thumbnail msg))
 thumbnailStory =
     Story "Thumbnail" []
         |> Story.addOption "Nothing" Nothing
-        |> Story.addOption "Icon Accessibility"
+        |> Story.addOption "Icon-Accessibility"
             (Just <| Thumbnail.Icon IconsAction.accessibility)
-        |> Story.addOption "Icon Alarm" (Just <| Thumbnail.Icon IconsAction.alarm)
+        |> Story.addOption "Icon-Alarm" (Just <| Thumbnail.Icon IconsAction.alarm)
 
 
 colorStory : Story (Theme.Color a)

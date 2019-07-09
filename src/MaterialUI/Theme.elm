@@ -231,6 +231,7 @@ shapeToAttributes width height (Rounded topLeft topRight bottomRight bottomLeft)
 
 type alias ShapeSchema =
     { button : Shape
+    , chip : Shape
     }
 
 
@@ -242,6 +243,21 @@ shapeRoundedDpEach topLeft topRight bottomRight bottomLeft =
 shapeRoundedDp : Int -> Shape
 shapeRoundedDp size =
     shapeRoundedDpEach size size size size
+
+
+shapeRoundedRatioEach :
+    Float
+    -> Float
+    -> Float
+    -> Float
+    -> Shape
+shapeRoundedRatioEach topLeft topRight bottomRight bottomLeft =
+    Rounded (Ratio topLeft) (Ratio topRight) (Ratio bottomRight) (Ratio bottomLeft)
+
+
+shapeRoundedRatio : Float -> Shape
+shapeRoundedRatio ratio =
+    shapeRoundedRatioEach ratio ratio ratio ratio
 
 
 type FontCase
@@ -360,6 +376,7 @@ defaultTheme =
         }
     , shape =
         { button = shapeRoundedDp 4
+        , chip = shapeRoundedRatio 0.5
         }
     , typescale = defaultTypescale
     }
