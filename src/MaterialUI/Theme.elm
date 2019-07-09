@@ -12,6 +12,7 @@ module MaterialUI.Theme exposing
     , getOnColor
     , onColor
     , shapeToAttributes
+    , toElementColor
     )
 
 import Color
@@ -37,11 +38,13 @@ type alias Theme a =
 
 type Color a
     = Primary
-    | PrimaryVariant
     | OnPrimary
+    | PrimaryVariant
+    | OnPrimaryVariant
     | Secondary
-    | SecondaryVariant
     | OnSecondary
+    | SecondaryVariant
+    | OnSecondaryVariant
     | Background
     | OnBackground
     | Surface
@@ -52,17 +55,20 @@ type Color a
 
 
 type alias ColorTheme a =
-    { primary : Element.Color
+    { isDark : Bool
+    , primary : Element.Color
     , primaryVariant : Element.Color
-    , onPrimary : Element.Color
     , secondary : Element.Color
     , secondaryVariant : Element.Color
-    , onSecondary : Element.Color
     , background : Element.Color
-    , onBackground : Element.Color
     , surface : Element.Color
-    , onSurface : Element.Color
     , error : Element.Color
+    , onPrimary : Element.Color
+    , onPrimaryVariant : Element.Color
+    , onSecondary : Element.Color
+    , onSecondaryVariant : Element.Color
+    , onBackground : Element.Color
+    , onSurface : Element.Color
     , onError : Element.Color
     , alternative : List ( a, Element.Color )
     }
@@ -75,19 +81,25 @@ onColor key =
             OnPrimary
 
         PrimaryVariant ->
-            OnPrimary
+            OnPrimaryVariant
 
         OnPrimary ->
             Primary
+
+        OnPrimaryVariant ->
+            PrimaryVariant
 
         Secondary ->
             OnSecondary
 
         SecondaryVariant ->
-            OnSecondary
+            OnSecondaryVariant
 
         OnSecondary ->
             Secondary
+
+        OnSecondaryVariant ->
+            SecondaryVariant
 
         Background ->
             OnBackground
@@ -127,6 +139,9 @@ getColor key { color } =
         OnPrimary ->
             color.onPrimary
 
+        OnPrimaryVariant ->
+            color.onPrimaryVariant
+
         Secondary ->
             color.secondary
 
@@ -135,6 +150,9 @@ getColor key { color } =
 
         OnSecondary ->
             color.onSecondary
+
+        OnSecondaryVariant ->
+            color.onSecondaryVariant
 
         Background ->
             color.background
@@ -323,17 +341,20 @@ type alias Typescale =
 defaultTheme : Theme a
 defaultTheme =
     { color =
-        { primary = toElementColor MaterialColor.purple500
-        , primaryVariant = toElementColor MaterialColor.purple700
-        , onPrimary = toElementColor Color.white
-        , secondary = toElementColor MaterialColor.teal200
-        , secondaryVariant = toElementColor MaterialColor.teal500
-        , onSecondary = toElementColor Color.black
+        { isDark = False
+        , primary = Element.rgb255 98 0 238 -- #6200EE
+        , primaryVariant = Element.rgb255 54 0 179
+        , secondary = Element.rgb255 3 218 198 -- #03DAC6
+        , secondaryVariant = Element.rgb255 1 135 134 -- #018786
         , background = toElementColor Color.white
-        , onBackground = toElementColor Color.black
         , surface = toElementColor Color.white
+        , error = Element.rgb255 176 0 32 -- #B00020
+        , onPrimary = toElementColor Color.white
+        , onPrimaryVariant = toElementColor Color.white
+        , onSecondary = toElementColor Color.black
+        , onSecondaryVariant = toElementColor Color.white
+        , onBackground = toElementColor Color.black
         , onSurface = toElementColor Color.black
-        , error = toElementColor MaterialColor.redA700
         , onError = toElementColor Color.white
         , alternative = []
         }

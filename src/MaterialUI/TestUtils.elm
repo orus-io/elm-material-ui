@@ -19,12 +19,15 @@ colorStory : Story (Theme.Color a)
 colorStory =
     Story "Color" []
         |> Story.addOption "OnError" Theme.OnError
-        |> Story.addOption "Error" Theme.Error
         |> Story.addOption "OnSurface" Theme.OnSurface
-        |> Story.addOption "Surface" Theme.Surface
-        |> Story.addOption "OnBackground" Theme.Background
-        |> Story.addOption "Background" Theme.Background
+        |> Story.addOption "OnBackground" Theme.OnBackground
+        |> Story.addOption "OnSecondaryVariant" Theme.OnSecondaryVariant
         |> Story.addOption "OnSecondary" Theme.OnSecondary
+        |> Story.addOption "OnPrimaryVariant" Theme.OnPrimaryVariant
+        |> Story.addOption "OnPrimary" Theme.OnPrimary
+        |> Story.addOption "Error" Theme.Error
+        |> Story.addOption "Surface" Theme.Surface
+        |> Story.addOption "Background" Theme.Background
         |> Story.addOption "SecondaryVariant" Theme.SecondaryVariant
         |> Story.addOption "Secondary" Theme.Secondary
         |> Story.addOption "PrimaryVariant" Theme.PrimaryVariant
