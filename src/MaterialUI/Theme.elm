@@ -5,6 +5,7 @@ module MaterialUI.Theme exposing
     , ShapeSchema
     , Size(..)
     , Theme
+    , addAlpha
     , applyCase
     , defaultTheme
     , fontToAttributes
@@ -27,6 +28,16 @@ toElementColor : Color.Color -> Element.Color
 toElementColor color =
     Color.toRgba color
         |> Element.fromRgb
+
+
+addAlpha : Float -> Element.Color -> Element.Color
+addAlpha value color =
+    let
+        rgb =
+            Element.toRgb color
+    in
+    Element.fromRgb
+        { rgb | alpha = value }
 
 
 type alias Theme a =
@@ -231,6 +242,7 @@ shapeToAttributes width height (Rounded topLeft topRight bottomRight bottomLeft)
 
 type alias ShapeSchema =
     { button : Shape
+    , card : Shape
     }
 
 
@@ -360,6 +372,7 @@ defaultTheme =
         }
     , shape =
         { button = shapeRoundedDp 4
+        , card = shapeRoundedDp 4
         }
     , typescale = defaultTypescale
     }

@@ -1,4 +1,10 @@
-module MaterialUI.TestUtils exposing (colorStory, onPressStory, themeStory, wrapView)
+module MaterialUI.TestUtils exposing
+    ( ThemeList
+    , colorStory
+    , onPressStory
+    , themeStory
+    , wrapView
+    )
 
 import Bibliopola exposing (IntoBook, Story, addStory)
 import Bibliopola.Story as Story
@@ -6,6 +12,10 @@ import Element
 import Element.Background as Background
 import Element.Font as Font
 import MaterialUI.Theme as Theme exposing (Theme)
+
+
+type alias ThemeList a =
+    List ( String, Theme a )
 
 
 onPressStory : String -> Story (Maybe String)
@@ -34,7 +44,7 @@ colorStory =
         |> Story.addOption "Primary" Theme.Primary
 
 
-themeStory : List ( String, Theme a ) -> Story (Theme a)
+themeStory : ThemeList a -> Story (Theme a)
 themeStory themes =
     List.foldr
         (\( name, theme ) ->
