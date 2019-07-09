@@ -16,7 +16,15 @@ import Element exposing (Element)
 import MaterialUI.Button as Button
 import MaterialUI.Icon exposing (Icon)
 import MaterialUI.Icons.Action as Action
-import MaterialUI.TestUtils exposing (colorStory, onPressStory, themeStory, wrapView)
+import MaterialUI.TestUtils
+    exposing
+        ( colorStory
+        , iconStory
+        , labelStory
+        , onPressStory
+        , themeStory
+        , wrapView
+        )
 import MaterialUI.Theme as Theme exposing (Theme)
 
 
@@ -67,20 +75,6 @@ viewContainedButton theme color text icon onPress =
         , onPress = onPress
         }
         |> wrapView theme
-
-
-labelStory : Story String
-labelStory =
-    Story "Label" []
-        |> Story.addOption "Longer Text" "Longer Text"
-        |> Story.addOption "Text" "Text"
-
-
-iconStory : Story (Maybe (Icon String))
-iconStory =
-    Story "Icon" []
-        |> Story.addOption "Alarm" (Just Action.alarm)
-        |> Story.addOption "Nothing" Nothing
 
 
 textButtonBook : List ( String, Theme a ) -> Book
