@@ -243,6 +243,10 @@ shapeToAttributes width height (Rounded topLeft topRight bottomRight bottomLeft)
 type alias ShapeSchema =
     { button : Shape
     , card : Shape
+    , textField :
+        { filled : Shape
+        , outlined : Shape
+        }
     }
 
 
@@ -373,6 +377,10 @@ defaultTheme =
     , shape =
         { button = shapeRoundedDp 4
         , card = shapeRoundedDp 4
+        , textField =
+            { filled = shapeRoundedDpEach 4 4 0 0
+            , outlined = shapeRoundedDp 4
+            }
         }
     , typescale = defaultTypescale
     }

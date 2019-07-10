@@ -1,14 +1,16 @@
 module MaterialUI.TestUtils exposing
     ( ThemeList
+    , booleanStory
     , colorStory
     , onPressStory
+    , render
     , themeStory
     , wrapView
     )
 
 import Bibliopola exposing (IntoBook, Story, addStory)
 import Bibliopola.Story as Story
-import Element
+import Element exposing (Element)
 import Element.Background as Background
 import Element.Font as Font
 import MaterialUI.Theme as Theme exposing (Theme)
@@ -23,6 +25,14 @@ onPressStory name =
     Story "onPress" []
         |> Story.addOption "Something" (Just <| name ++ " pressed")
         |> Story.addOption "Nothing" Nothing
+
+
+booleanStory : String -> Story Bool
+booleanStory name =
+    Story name
+        [ ( "True", True )
+        , ( "False", False )
+        ]
 
 
 colorStory : Story (Theme.Color a)
@@ -57,11 +67,13 @@ themeStory themes =
 
 wrapView theme view =
     Element.column
-        [ Element.width Element.fill
-        , Element.height Element.fill
-        , Background.color theme.color.background
-        , Font.color theme.color.onBackground
-        ]
+        ([ Element.width Element.fill
+         , Element.height Element.fill
+         , Background.color theme.color.background
+         , Font.color theme.color.onBackground
+         ]
+            ++ Theme.fontToAttributes theme.typescale.body1
+        )
         [ Element.el
             [ Element.width Element.fill
             , Element.height Element.fill
@@ -84,3 +96,9 @@ wrapView theme view =
                 view
             )
         ]
+
+
+render : Theme b -> (Theme b -> Element msg) -> Element msg
+render theme view =
+    view theme
+        |> wrapView theme
