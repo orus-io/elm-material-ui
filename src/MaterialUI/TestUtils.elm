@@ -66,7 +66,7 @@ themeStory themes =
 
 
 wrapView theme view =
-    Element.column
+    Element.el
         ([ Element.width Element.fill
          , Element.height Element.fill
          , Background.color theme.color.background
@@ -74,28 +74,12 @@ wrapView theme view =
          ]
             ++ Theme.fontToAttributes theme.typescale.body1
         )
-        [ Element.el
-            [ Element.width Element.fill
-            , Element.height Element.fill
+        (Element.el
+            [ Element.centerX
+            , Element.centerY
             ]
-            (Element.el
-                [ Element.centerX
-                , Element.centerY
-                ]
-                view
-            )
-        , Element.el
-            [ Element.width Element.fill
-            , Element.height Element.fill
-            ]
-            (Element.el
-                [ Element.centerX
-                , Element.centerY
-                , Element.explain Debug.todo
-                ]
-                view
-            )
-        ]
+            view
+        )
 
 
 render : Theme b -> (Theme b -> Element msg) -> Element msg
