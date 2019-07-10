@@ -4,11 +4,13 @@ import Browser
 import Element exposing (Element)
 import Element.Background as Background
 import Element.Font as Font
+import Element.Input as EInput
 import Form exposing (Form)
 import Form.Validate as Validate exposing (Validation)
 import Html exposing (Html)
 import MaterialUI.Button as Button
 import MaterialUI.ElmFormInput as Input
+import MaterialUI.Radio as Radio
 import MaterialUI.TextField as TextField
 import MaterialUI.Theme as Theme exposing (Theme)
 import MaterialUI.Themes.Dark as Dark
@@ -20,6 +22,7 @@ import MaterialUI.Themes.Dark as Dark
 
 type alias Foo =
     { bar : String
+    , baz : String
     }
 
 
@@ -53,6 +56,7 @@ validate : Validation () Foo
 validate =
     Validate.succeed Foo
         |> Validate.andMap (Validate.field "bar" Validate.email)
+        |> Validate.andMap (Validate.field "baz" Validate.string)
 
 
 
@@ -78,6 +82,9 @@ formView form theme =
     let
         bar =
             Form.getFieldAsString "bar" form
+
+        baz =
+            Form.getFieldAsString "baz" form
     in
     Element.column []
         [ Input.textInput Debug.toString
@@ -90,6 +97,22 @@ formView form theme =
             , helperText = Just "Type a value for 'bar'"
             }
             theme
+        , Element.el [] <|
+            Input.radioInput
+                Debug.toString
+                baz
+                [ Element.padding 10
+                , Element.spacing 20
+                ]
+                { label = "Lunch"
+                , hideLabel = False
+                , color = Theme.Primary
+                , options =
+                    [ Radio.option "A" "Taco!"
+                    , Radio.option "B" "Gyro"
+                    ]
+                }
+                theme
         , Button.contained
             { text = "Submit"
             , color = Theme.Primary

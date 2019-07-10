@@ -1,4 +1,4 @@
-module MaterialUI.Radio exposing (option, radio)
+module MaterialUI.Radio exposing (Option, option, radio)
 
 import Element exposing (Attribute, Element)
 import Element.Background as Background
@@ -6,18 +6,6 @@ import Element.Border as Border
 import Element.Input as Input exposing (Option)
 import MaterialUI.Internal as Internal
 import MaterialUI.Theme as Theme exposing (Theme)
-
-
-
-{- radio :
-   List (Attribute msg)
-   -> { onChange : option -> msg
-      , options : List (Option option msg)
-      , selected : Maybe option
-      , label : Label msg
-      }
-   -> Element msg
--}
 
 
 radioOption : String -> Theme.Color a -> Theme a -> Input.OptionState -> Element msg
