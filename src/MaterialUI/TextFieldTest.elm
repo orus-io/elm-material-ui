@@ -28,8 +28,10 @@ viewTextField :
     -> Bool
     -> String
     -> Bool
+    -> Maybe String
+    -> Maybe String
     -> Element String
-viewTextField theme color type_ label hideLabel text focused =
+viewTextField theme color type_ label hideLabel text focused helperText errorText =
     TextField.text [ Element.width <| Element.px 400 ]
         { color = color
         , label = label
@@ -38,6 +40,8 @@ viewTextField theme color type_ label hideLabel text focused =
         , text = text
         , onChange = identity
         , focused = focused
+        , helperText = helperText
+        , errorText = errorText
         }
         |> render theme
 
@@ -46,7 +50,7 @@ labelStory : Story String
 labelStory =
     Story "Label"
         [ ( "Text", "Text" )
-        , ( "Longer Text", "Longer Text" )
+        , ( "Longer_Text", "Longer Text" )
         ]
 
 
@@ -68,9 +72,25 @@ typeStory =
 textStory : Story String
 textStory =
     Story "Text"
-        [ ( "Some text", "Some text" )
-        , ( "Longer text", "A longer text thay may be bigger than the field" )
+        [ ( "Some_text", "Some text" )
+        , ( "Longer_text", "A longer text thay may be bigger than the field" )
         , ( "Empty", "" )
+        ]
+
+
+helperTextStory : Story (Maybe String)
+helperTextStory =
+    Story "HelperText"
+        [ ( "Nothing", Nothing )
+        , ( "Some_text", Just "Some helper text" )
+        ]
+
+
+errorTextStory : Story (Maybe String)
+errorTextStory =
+    Story "ErrorText"
+        [ ( "Nothing", Nothing )
+        , ( "Some_Error", Just "Bad value, try again" )
         ]
 
 
@@ -84,6 +104,8 @@ textFieldBook themes =
         |> addStory (booleanStory "HideLabel")
         |> addStory textStory
         |> addStory (booleanStory "Focused")
+        |> addStory helperTextStory
+        |> addStory errorTextStory
         |> buildBook
 
 
