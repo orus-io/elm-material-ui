@@ -119,10 +119,14 @@ radio attrs props theme =
                     )
         , selected = props.selected
         , label =
-            Input.labelAbove
-                (Theme.fontToAttributes theme.typescale.caption
-                    ++ [ Element.moveUp 8 ]
-                )
-            <|
-                Element.text props.label
+            if props.hideLabel then
+                Input.labelHidden props.label
+
+            else
+                Input.labelAbove
+                    (Theme.fontToAttributes theme.typescale.caption
+                        ++ [ Element.moveUp 8 ]
+                    )
+                <|
+                    Element.text props.label
         }
