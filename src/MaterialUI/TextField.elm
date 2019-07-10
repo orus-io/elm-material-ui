@@ -80,7 +80,7 @@ text attrs field theme =
                     ]
 
                 ( False, False ) ->
-                    [ Font.color (theme.color.onSurface |> Theme.addAlpha 0.6)
+                    [ Font.color (theme.color.onSurface |> Theme.setAlpha 0.6)
                     ]
 
         labelFont =
@@ -117,9 +117,9 @@ text attrs field theme =
                     ]
 
                 ( False, False ) ->
-                    [ Border.color <| Theme.addAlpha 0.3 theme.color.onSurface
+                    [ Border.color <| Theme.setAlpha 0.3 theme.color.onSurface
                     , Element.mouseOver
-                        [ Border.color <| Theme.addAlpha 0.6 theme.color.onSurface
+                        [ Border.color <| Theme.setAlpha 0.6 theme.color.onSurface
                         ]
                     ]
 
@@ -151,7 +151,7 @@ text attrs field theme =
                                 , left = 0
                                 , right = 0
                                 }
-                           , Border.color <| Theme.addAlpha 0.4 theme.color.onSurface
+                           , Border.color <| Theme.setAlpha 0.4 theme.color.onSurface
                            , Element.focused
                                 [ Border.glow theme.color.onSurface 0
                                 , Border.color <| Theme.getColor field.color theme
@@ -161,7 +161,7 @@ text attrs field theme =
 
                              else
                                 Element.mouseOver
-                                    [ Border.color <| Theme.addAlpha 0.8 theme.color.onSurface
+                                    [ Border.color <| Theme.setAlpha 0.8 theme.color.onSurface
                                     ]
                            ]
                         ++ borderColor
@@ -223,17 +223,17 @@ text attrs field theme =
                     ]
 
                 Filled ->
-                    [ Background.color <| Theme.addAlpha 0.05 theme.color.onSurface
+                    [ Background.color <| Theme.setAlpha 0.05 theme.color.onSurface
                     , if field.focused then
-                        Background.color <| Theme.addAlpha 0.15 theme.color.onSurface
+                        Background.color <| Theme.setAlpha 0.15 theme.color.onSurface
 
                       else
                         Element.mouseOver
-                            [ Background.color <| Theme.addAlpha 0.1 theme.color.onSurface
+                            [ Background.color <| Theme.setAlpha 0.1 theme.color.onSurface
                             ]
                     , Element.focused
                         [ Border.glow theme.color.onSurface 0
-                        , Background.color <| Theme.addAlpha 0.15 theme.color.onSurface
+                        , Background.color <| Theme.setAlpha 0.15 theme.color.onSurface
                         ]
                     ]
 
@@ -274,7 +274,7 @@ text attrs field theme =
 
                     ( Nothing, Just helperText ) ->
                         [ Element.el
-                            (Font.color (Theme.addAlpha 0.7 theme.color.onSurface) :: belowElementAttributes)
+                            (Font.color (Theme.setAlpha 0.7 theme.color.onSurface) :: belowElementAttributes)
                             (Element.el [ Element.alignBottom ] <| Element.text helperText)
                         ]
 

@@ -37,12 +37,12 @@ card c theme =
                         { offset = ( 1, 1 )
                         , size = 1
                         , blur = 1
-                        , color = Theme.addAlpha 0.16 theme.color.onSurface
+                        , color = Theme.setAlpha 0.16 theme.color.onSurface
                         }
                     ]
 
                 else
-                    [ Border.color <| Theme.addAlpha 0.16 theme.color.onSurface
+                    [ Border.color <| Theme.setAlpha 0.16 theme.color.onSurface
                     , Border.width 1
                     ]
                )

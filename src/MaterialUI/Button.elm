@@ -37,6 +37,14 @@ text btn theme =
                , Element.width (Element.shrink |> Element.minimum 64)
                , Element.paddingXY 8 0
                , Font.color <| Theme.getColor btn.color theme
+               , Element.mouseDown
+                    [ Background.color (Theme.getColor btn.color theme |> Theme.setAlpha 0.2) ]
+               , Element.focused
+                    [ Border.glow theme.color.surface 0
+                    , Background.color (Theme.getColor btn.color theme |> Theme.setAlpha 0.15)
+                    ]
+               , Element.mouseOver
+                    [ Background.color (Theme.getColor btn.color theme |> Theme.setAlpha 0.1) ]
                ]
         )
         { label =
@@ -88,6 +96,14 @@ outlined btn theme =
                , Border.width 1
                , Border.color <| Theme.getColor btn.color theme
                , Font.color <| Theme.getColor btn.color theme
+               , Element.mouseDown
+                    [ Background.color (Theme.getColor btn.color theme |> Theme.setAlpha 0.2) ]
+               , Element.focused
+                    [ Border.glow theme.color.surface 0
+                    , Background.color (Theme.getColor btn.color theme |> Theme.setAlpha 0.15)
+                    ]
+               , Element.mouseOver
+                    [ Background.color (Theme.getColor btn.color theme |> Theme.setAlpha 0.1) ]
                ]
         )
         { label = makeLabel theme btn.color btn.text btn.icon
@@ -105,6 +121,14 @@ contained btn theme =
                , Element.paddingXY 16 0
                , Background.color <| Theme.getColor btn.color theme
                , Font.color <| Theme.getOnColor btn.color theme
+               , Element.mouseDown
+                    [ Background.color (Theme.getColor btn.color theme |> Theme.addLightness 0.15) ]
+               , Element.focused
+                    [ Border.glow theme.color.surface 0
+                    , Background.color (Theme.getColor btn.color theme |> Theme.addLightness 0.1)
+                    ]
+               , Element.mouseOver
+                    [ Background.color (Theme.getColor btn.color theme |> Theme.addLightness 0.05) ]
                ]
         )
         { label = makeLabel theme (Theme.onColor btn.color) btn.text btn.icon

@@ -5,13 +5,14 @@ module MaterialUI.Theme exposing
     , ShapeSchema
     , Size(..)
     , Theme
-    , addAlpha
+    , addLightness
     , applyCase
     , defaultTheme
     , fontToAttributes
     , getColor
     , getOnColor
     , onColor
+    , setAlpha
     , shapeToAttributes
     , toElementColor
     )
@@ -30,14 +31,26 @@ toElementColor color =
         |> Element.fromRgb
 
 
-addAlpha : Float -> Element.Color -> Element.Color
-addAlpha value color =
+setAlpha : Float -> Element.Color -> Element.Color
+setAlpha value color =
     let
         rgb =
             Element.toRgb color
     in
     Element.fromRgb
         { rgb | alpha = value }
+
+
+addLightness : Float -> Element.Color -> Element.Color
+addLightness value color =
+    let
+        hsl =
+            Element.toRgb color |> Color.fromRgba |> Color.toHsla
+    in
+    Color.fromHsla
+        { hsl | lightness = min 1.0 (hsl.lightness + value) }
+        |> Color.toRgba
+        |> Element.fromRgb
 
 
 type alias Theme a =
