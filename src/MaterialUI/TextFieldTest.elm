@@ -27,15 +27,17 @@ viewTextField :
     -> String
     -> Bool
     -> String
+    -> Bool
     -> Element String
-viewTextField theme color type_ label hideLabel text =
-    TextField.text
+viewTextField theme color type_ label hideLabel text focused =
+    TextField.text [ Element.width <| Element.px 400 ]
         { color = color
         , label = label
         , hideLabel = hideLabel
         , type_ = type_
         , text = text
         , onChange = identity
+        , focused = focused
         }
         |> render theme
 
@@ -81,6 +83,7 @@ textFieldBook themes =
         |> addStory labelStory
         |> addStory (booleanStory "HideLabel")
         |> addStory textStory
+        |> addStory (booleanStory "Focused")
         |> buildBook
 
 
