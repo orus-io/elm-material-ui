@@ -90,12 +90,13 @@ formView form theme =
             , helperText = Just "Type a value for 'bar'"
             }
             theme
-        , Button.contained theme
+        , Button.contained
             { text = "Submit"
             , color = Theme.Primary
             , icon = Nothing
             , onPress = Just Form.Submit
             }
+            theme
         ]
 
 

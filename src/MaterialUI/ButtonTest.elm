@@ -16,7 +16,7 @@ import Element exposing (Element)
 import MaterialUI.Button as Button
 import MaterialUI.Icon exposing (Icon)
 import MaterialUI.Icons.Action as Action
-import MaterialUI.TestUtils exposing (colorStory, onPressStory, themeStory, wrapView)
+import MaterialUI.TestUtils exposing (colorStory, onPressStory, render, themeStory)
 import MaterialUI.Theme as Theme exposing (Theme)
 
 
@@ -27,12 +27,12 @@ viewTextButton :
     -> Maybe String
     -> Element String
 viewTextButton theme color text onPress =
-    Button.text theme
+    Button.text
         { color = color
         , text = text
         , onPress = onPress
         }
-        |> wrapView theme
+        |> render theme
 
 
 viewOutlinedButton :
@@ -43,13 +43,13 @@ viewOutlinedButton :
     -> Maybe String
     -> Element String
 viewOutlinedButton theme color text icon onPress =
-    Button.outlined theme
+    Button.outlined
         { color = color
         , text = text
         , icon = icon
         , onPress = onPress
         }
-        |> wrapView theme
+        |> render theme
 
 
 viewContainedButton :
@@ -60,13 +60,13 @@ viewContainedButton :
     -> Maybe String
     -> Element String
 viewContainedButton theme color text icon onPress =
-    Button.contained theme
+    Button.contained
         { color = color
         , text = text
         , icon = icon
         , onPress = onPress
         }
-        |> wrapView theme
+        |> render theme
 
 
 labelStory : Story String

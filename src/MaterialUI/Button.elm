@@ -29,8 +29,8 @@ type alias TextButton a msg =
     }
 
 
-text : Theme.Theme a -> TextButton a msg -> Element msg
-text theme btn =
+text : TextButton a msg -> Theme.Theme a -> Element msg
+text btn theme =
     Input.button
         (Theme.fontToAttributes theme.typescale.button
             ++ [ Element.height <| Element.px 36
@@ -77,8 +77,8 @@ makeLabel theme color label maybeIcon =
                     ]
 
 
-outlined : Theme.Theme a -> Button a msg -> Element msg
-outlined theme btn =
+outlined : Button a msg -> Theme.Theme a -> Element msg
+outlined btn theme =
     Input.button
         (Theme.fontToAttributes theme.typescale.button
             ++ Theme.shapeToAttributes 36 36 theme.shape.button
@@ -95,8 +95,8 @@ outlined theme btn =
         }
 
 
-contained : Theme.Theme a -> Button a msg -> Element msg
-contained theme btn =
+contained : Button a msg -> Theme.Theme a -> Element msg
+contained btn theme =
     Input.button
         (Theme.fontToAttributes theme.typescale.button
             ++ Theme.shapeToAttributes 36 36 theme.shape.button
