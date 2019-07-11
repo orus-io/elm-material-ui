@@ -15,7 +15,15 @@ import Bibliopola.Story as Story
 import Element exposing (Element)
 import MaterialUI.Icon exposing (Icon)
 import MaterialUI.Icons.Action as Action
-import MaterialUI.TestUtils exposing (booleanStory, colorStory, onPressStory, render, themeStory)
+import MaterialUI.TestUtils
+    exposing
+        ( booleanStory
+        , colorStory
+        , labelStory
+        , onPressStory
+        , render
+        , themeStory
+        )
 import MaterialUI.TextField as TextField
 import MaterialUI.Theme as Theme exposing (Theme)
 
@@ -27,11 +35,11 @@ viewTextField :
     -> String
     -> Bool
     -> String
-    -> Bool
+    -> TextField.State
     -> Maybe String
     -> Maybe String
     -> Element String
-viewTextField theme color type_ label hideLabel text focused helperText errorText =
+viewTextField theme color type_ label hideLabel text state helperText errorText =
     TextField.text [ Element.width <| Element.px 400 ]
         { color = color
         , label = label
@@ -39,19 +47,11 @@ viewTextField theme color type_ label hideLabel text focused helperText errorTex
         , type_ = type_
         , text = text
         , onChange = identity
-        , focused = focused
+        , state = state
         , helperText = helperText
         , errorText = errorText
         }
         |> render theme
-
-
-labelStory : Story String
-labelStory =
-    Story "Label"
-        [ ( "Text", "Text" )
-        , ( "Longer_Text", "Longer Text" )
-        ]
 
 
 iconStory : Story (Maybe (Icon String))
@@ -94,6 +94,15 @@ errorTextStory =
         ]
 
 
+stateStory : Story TextField.State
+stateStory =
+    Story "State"
+        [ ( "Idle", TextField.Idle )
+        , ( "Focused", TextField.Focused )
+        , ( "Disabled", TextField.Disabled )
+        ]
+
+
 textFieldBook : List ( String, Theme a ) -> Book
 textFieldBook themes =
     Bibliopola.intoBook "Text" identity viewTextField
@@ -101,9 +110,9 @@ textFieldBook themes =
         |> addStory colorStory
         |> addStory typeStory
         |> addStory labelStory
-        |> addStory (booleanStory "HideLabel")
+        |> addStory (booleanStory "HideLabel" False)
         |> addStory textStory
-        |> addStory (booleanStory "Focused")
+        |> addStory stateStory
         |> addStory helperTextStory
         |> addStory errorTextStory
         |> buildBook

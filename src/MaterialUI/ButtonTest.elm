@@ -20,6 +20,7 @@ import MaterialUI.TestUtils
     exposing
         ( booleanStory
         , colorStory
+        , labelStory
         , onPressStory
         , render
         , themeStory
@@ -84,13 +85,6 @@ viewContainedButton theme color text icon onPress disabled =
         |> render theme
 
 
-labelStory : Story String
-labelStory =
-    Story "Label" []
-        |> Story.addOption "Longer_Text" "Longer Text"
-        |> Story.addOption "Text" "Text"
-
-
 iconStory : Story (Maybe (Icon String))
 iconStory =
     Story "Icon" []
@@ -106,7 +100,7 @@ textButtonBook themes =
         |> addStory labelStory
         |> addStory iconStory
         |> addStory (onPressStory "button")
-        |> addStory (booleanStory "disabled")
+        |> addStory (booleanStory "disabled" False)
         |> buildBook
 
 
@@ -118,7 +112,7 @@ outlinedButtonBook themes =
         |> addStory labelStory
         |> addStory iconStory
         |> addStory (onPressStory "button")
-        |> addStory (booleanStory "disabled")
+        |> addStory (booleanStory "disabled" False)
         |> buildBook
 
 
@@ -130,7 +124,7 @@ containedButtonBook themes =
         |> addStory labelStory
         |> addStory iconStory
         |> addStory (onPressStory "button")
-        |> addStory (booleanStory "disabled")
+        |> addStory (booleanStory "disabled" False)
         |> buildBook
 
 

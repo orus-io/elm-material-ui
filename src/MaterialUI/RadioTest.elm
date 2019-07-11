@@ -88,6 +88,6 @@ book themes =
         |> addStory (themeStory themes)
         |> addStory colorStory
         |> addStory labelStory
-        |> addStory (booleanStory "HideLabel")
+        |> addStory (booleanStory "HideLabel" False)
         |> addStory optionsStory
         |> buildBook

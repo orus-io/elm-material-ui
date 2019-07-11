@@ -95,6 +95,7 @@ formView form theme =
             , type_ = TextField.Outlined
             , color = Theme.Primary
             , helperText = Just "Type a value for 'bar'"
+            , disabled = False
             }
             theme
         , Element.el [] <|

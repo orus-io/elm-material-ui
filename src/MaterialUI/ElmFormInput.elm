@@ -20,6 +20,7 @@ textInput :
         , type_ : TextField.Type
         , color : Theme.Color b
         , helperText : Maybe String
+        , disabled : Bool
         }
     -> Theme b
     -> Element Form.Msg
@@ -36,7 +37,15 @@ textInput renderError state attrs props =
         , color = props.color
         , text = state.value |> Maybe.withDefault ""
         , onChange = Form.Field.String >> Form.Input state.path Form.Text
-        , focused = state.hasFocus
+        , state =
+            if props.disabled then
+                TextField.Disabled
+
+            else if state.hasFocus then
+                TextField.Focused
+
+            else
+                TextField.Idle
         , errorText =
             Maybe.map renderError state.error
         , helperText = props.helperText

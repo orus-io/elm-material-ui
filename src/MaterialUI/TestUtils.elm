@@ -2,6 +2,7 @@ module MaterialUI.TestUtils exposing
     ( ThemeList
     , booleanStory
     , colorStory
+    , labelStory
     , onPressStory
     , render
     , themeStory
@@ -27,12 +28,18 @@ onPressStory name =
         |> Story.addOption "Nothing" Nothing
 
 
-booleanStory : String -> Story Bool
-booleanStory name =
-    Story name
-        [ ( "True", True )
-        , ( "False", False )
-        ]
+booleanStory : String -> Bool -> Story Bool
+booleanStory name defaultValue =
+    Story name <|
+        if defaultValue then
+            [ ( "True", True )
+            , ( "False", False )
+            ]
+
+        else
+            [ ( "False", False )
+            , ( "True", True )
+            ]
 
 
 colorStory : Story (Theme.Color a)
@@ -63,6 +70,14 @@ themeStory themes =
         (Story "Theme" [])
         themes
         |> Story.addOption "Default" Theme.defaultTheme
+
+
+labelStory : Story String
+labelStory =
+    Story "Label"
+        [ ( "Label", "Label" )
+        , ( "Longer_label", "Longer label" )
+        ]
 
 
 wrapView theme view =

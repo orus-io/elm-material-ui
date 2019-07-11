@@ -1,4 +1,4 @@
-module MaterialUI.TextField exposing (TextField, Type(..), text)
+module MaterialUI.TextField exposing (State(..), TextField, Type(..), text)
 
 import Element exposing (Attribute, Element)
 import Element.Background as Background
@@ -6,12 +6,19 @@ import Element.Border as Border
 import Element.Font as Font
 import Element.Input as Input
 import Html.Attributes exposing (style)
+import MaterialUI.Internal as Internal
 import MaterialUI.Theme as Theme exposing (Theme)
 
 
 type Type
     = Filled
     | Outlined
+
+
+type State
+    = Idle
+    | Focused
+    | Disabled
 
 
 type alias TextField a msg =
@@ -21,7 +28,7 @@ type alias TextField a msg =
     , color : Theme.Color a
     , text : String
     , onChange : String -> msg
-    , focused : Bool
+    , state : State
     , errorText : Maybe String
     , helperText : Maybe String
     }
@@ -35,7 +42,7 @@ text attrs field theme =
 
         labelInFront =
             -- is the label in front of the input ?
-            not field.focused && field.text == ""
+            not field.hideLabel && field.state /= Focused && field.text == ""
 
         labelText =
             if hasError then
@@ -70,16 +77,16 @@ text attrs field theme =
                    )
 
         labelColor =
-            case ( hasError, field.focused ) of
+            case ( hasError, field.state ) of
                 ( True, _ ) ->
                     [ Font.color theme.color.error
                     ]
 
-                ( False, True ) ->
+                ( False, Focused ) ->
                     [ Font.color (Theme.getColor field.color theme)
                     ]
 
-                ( False, False ) ->
+                ( False, _ ) ->
                     [ Font.color (theme.color.onSurface |> Theme.setAlpha 0.6)
                     ]
 
@@ -107,20 +114,24 @@ text attrs field theme =
                     (Element.text labelText)
 
         borderColor =
-            case ( hasError, field.focused ) of
+            case ( hasError, field.state ) of
                 ( True, _ ) ->
                     [ Border.color theme.color.error
                     ]
 
-                ( False, True ) ->
+                ( False, Focused ) ->
                     [ Border.color <| Theme.getColor field.color theme
                     ]
 
-                ( False, False ) ->
+                ( False, Idle ) ->
                     [ Border.color <| Theme.setAlpha 0.3 theme.color.onSurface
                     , Element.mouseOver
                         [ Border.color <| Theme.setAlpha 0.6 theme.color.onSurface
                         ]
+                    ]
+
+                ( False, Disabled ) ->
+                    [ Border.color <| Theme.setAlpha 0.3 theme.color.onSurface
                     ]
 
         borders =
@@ -131,11 +142,11 @@ text attrs field theme =
                            , Element.focused
                                 [ Border.glow theme.color.onSurface 0
                                 ]
-                           , Element.inFront <|
+                           , Element.behindContent <|
                                 Element.el
                                     (Theme.shapeToAttributes 56 56 theme.shape.textField.outlined
                                         ++ [ Border.width
-                                                (if field.focused then
+                                                (if field.state == Focused then
                                                     2
 
                                                  else
@@ -145,6 +156,7 @@ text attrs field theme =
                                            , Element.height Element.fill
                                            , Element.htmlAttribute
                                                 (style "transition" "border 0.15s")
+                                           , Background.color <| Theme.setAlpha 0.0 theme.color.onSurface
                                            ]
                                         ++ borderColor
                                     )
@@ -156,7 +168,7 @@ text attrs field theme =
                     Theme.shapeToAttributes 56 56 theme.shape.textField.filled
                         ++ [ Border.widthEach
                                 { bottom =
-                                    if field.focused then
+                                    if field.state == Focused then
                                         2
 
                                     else
@@ -170,13 +182,18 @@ text attrs field theme =
                                 [ Border.glow theme.color.onSurface 0
                                 , Border.color <| Theme.getColor field.color theme
                                 ]
-                           , if field.focused then
-                                Border.color <| Theme.getColor field.color theme
+                           , case field.state of
+                                Idle ->
+                                    Element.mouseOver
+                                        [ Border.color <| Theme.setAlpha 0.8 theme.color.onSurface
+                                        ]
 
-                             else
-                                Element.mouseOver
-                                    [ Border.color <| Theme.setAlpha 0.8 theme.color.onSurface
-                                    ]
+                                Focused ->
+                                    Border.color <| Theme.getColor field.color theme
+
+                                Disabled ->
+                                    Element.mouseOver
+                                        []
                            ]
                         ++ borderColor
 
@@ -191,7 +208,7 @@ text attrs field theme =
                             else
                                 20
                         , bottom =
-                            if field.focused then
+                            if field.state == Focused then
                                 0
 
                             else
@@ -208,23 +225,30 @@ text attrs field theme =
         background =
             case field.type_ of
                 Outlined ->
-                    [ Background.color theme.color.surface
+                    [ --Background.color theme.color.surface
+                      Background.color <| Theme.setAlpha 0.0 theme.color.onSurface
                     ]
 
                 Filled ->
                     [ Background.color <| Theme.setAlpha 0.05 theme.color.onSurface
-                    , if field.focused then
-                        Background.color <| Theme.setAlpha 0.15 theme.color.onSurface
-
-                      else
-                        Element.mouseOver
-                            [ Background.color <| Theme.setAlpha 0.1 theme.color.onSurface
-                            ]
-                    , Element.focused
-                        [ Border.glow theme.color.onSurface 0
-                        , Background.color <| Theme.setAlpha 0.15 theme.color.onSurface
-                        ]
                     ]
+                        ++ (case field.state of
+                                Focused ->
+                                    [ Background.color <| Theme.setAlpha 0.15 theme.color.onSurface ]
+
+                                Idle ->
+                                    [ Element.mouseOver
+                                        [ Background.color <| Theme.setAlpha 0.1 theme.color.onSurface
+                                        ]
+                                    , Element.focused
+                                        [ Border.glow theme.color.onSurface 0
+                                        , Background.color <| Theme.setAlpha 0.15 theme.color.onSurface
+                                        ]
+                                    ]
+
+                                Disabled ->
+                                    []
+                           )
 
         belowElementAttributes =
             Theme.fontToAttributes theme.typescale.caption
@@ -243,6 +267,14 @@ text attrs field theme =
                             "transition"
                             "border 0.15s, background 0.15s, padding 0.15s"
                         )
+                   , Font.color
+                        (if field.state == Disabled then
+                            Theme.setAlpha 0.7 theme.color.onSurface
+
+                         else
+                            theme.color.onSurface
+                        )
+                   , Internal.disabled <| field.state == Disabled
                    ]
                 ++ padding
                 ++ attrs
@@ -263,7 +295,7 @@ text attrs field theme =
 
                     ( Nothing, Just helperText ) ->
                         [ Element.el
-                            (Font.color (Theme.setAlpha 0.7 theme.color.onSurface) :: belowElementAttributes)
+                            (Font.color (Theme.setAlpha 0.6 theme.color.onSurface) :: belowElementAttributes)
                             (Element.el [ Element.alignBottom ] <| Element.text helperText)
                         ]
 
