@@ -75,6 +75,7 @@ type Color a
     | OnSurface
     | Error
     | OnError
+    | Custom Element.Color
     | Alternative a
 
 
@@ -143,6 +144,9 @@ onColor key =
         OnError ->
             Error
 
+        Custom color ->
+            OnSurface
+
         Alternative a ->
             Alternative a
 
@@ -195,6 +199,9 @@ getColor key { color } =
 
         OnError ->
             color.onError
+
+        Custom c ->
+            c
 
         Alternative a ->
             List.filterMap

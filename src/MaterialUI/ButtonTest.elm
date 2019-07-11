@@ -16,7 +16,14 @@ import Element exposing (Element)
 import MaterialUI.Button as Button
 import MaterialUI.Icon exposing (Icon)
 import MaterialUI.Icons.Action as Action
-import MaterialUI.TestUtils exposing (colorStory, onPressStory, render, themeStory)
+import MaterialUI.TestUtils
+    exposing
+        ( booleanStory
+        , colorStory
+        , onPressStory
+        , render
+        , themeStory
+        )
 import MaterialUI.Theme as Theme exposing (Theme)
 
 
@@ -24,13 +31,17 @@ viewTextButton :
     Theme a
     -> Theme.Color a
     -> String
+    -> Maybe (Icon String)
     -> Maybe String
+    -> Bool
     -> Element String
-viewTextButton theme color text onPress =
+viewTextButton theme color text icon onPress disabled =
     Button.text
         { color = color
         , text = text
+        , icon = icon
         , onPress = onPress
+        , disabled = disabled
         }
         |> render theme
 
@@ -41,13 +52,15 @@ viewOutlinedButton :
     -> String
     -> Maybe (Icon String)
     -> Maybe String
+    -> Bool
     -> Element String
-viewOutlinedButton theme color text icon onPress =
+viewOutlinedButton theme color text icon onPress disabled =
     Button.outlined
         { color = color
         , text = text
         , icon = icon
         , onPress = onPress
+        , disabled = disabled
         }
         |> render theme
 
@@ -58,13 +71,15 @@ viewContainedButton :
     -> String
     -> Maybe (Icon String)
     -> Maybe String
+    -> Bool
     -> Element String
-viewContainedButton theme color text icon onPress =
+viewContainedButton theme color text icon onPress disabled =
     Button.contained
         { color = color
         , text = text
         , icon = icon
         , onPress = onPress
+        , disabled = disabled
         }
         |> render theme
 
@@ -72,7 +87,7 @@ viewContainedButton theme color text icon onPress =
 labelStory : Story String
 labelStory =
     Story "Label" []
-        |> Story.addOption "Longer Text" "Longer Text"
+        |> Story.addOption "Longer_Text" "Longer Text"
         |> Story.addOption "Text" "Text"
 
 
@@ -89,7 +104,9 @@ textButtonBook themes =
         |> addStory (themeStory themes)
         |> addStory colorStory
         |> addStory labelStory
+        |> addStory iconStory
         |> addStory (onPressStory "button")
+        |> addStory (booleanStory "disabled")
         |> buildBook
 
 
@@ -101,6 +118,7 @@ outlinedButtonBook themes =
         |> addStory labelStory
         |> addStory iconStory
         |> addStory (onPressStory "button")
+        |> addStory (booleanStory "disabled")
         |> buildBook
 
 
@@ -112,6 +130,7 @@ containedButtonBook themes =
         |> addStory labelStory
         |> addStory iconStory
         |> addStory (onPressStory "button")
+        |> addStory (booleanStory "disabled")
         |> buildBook
 
 

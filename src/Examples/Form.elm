@@ -118,6 +118,7 @@ formView form theme =
             , color = Theme.Primary
             , icon = Nothing
             , onPress = Just Form.Submit
+            , disabled = Form.getOutput form == Nothing
             }
             theme
         ]
