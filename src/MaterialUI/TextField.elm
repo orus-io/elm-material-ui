@@ -127,14 +127,28 @@ text attrs field theme =
             case field.type_ of
                 Outlined ->
                     Theme.shapeToAttributes 56 56 theme.shape.textField.outlined
-                        ++ [ if field.focused then
-                                Border.width 2
-
-                             else
-                                Border.width 1
+                        ++ [ Border.width 1
                            , Element.focused
                                 [ Border.glow theme.color.onSurface 0
                                 ]
+                           , Element.inFront <|
+                                Element.el
+                                    (Theme.shapeToAttributes 56 56 theme.shape.textField.outlined
+                                        ++ [ Border.width
+                                                (if field.focused then
+                                                    2
+
+                                                 else
+                                                    1
+                                                )
+                                           , Element.width Element.fill
+                                           , Element.height Element.fill
+                                           , Element.htmlAttribute
+                                                (style "transition" "border 0.15s")
+                                           ]
+                                        ++ borderColor
+                                    )
+                                    Element.none
                            ]
                         ++ borderColor
 
@@ -188,32 +202,7 @@ text attrs field theme =
                     ]
 
                 Outlined ->
-                    [ Element.paddingEach
-                        { top =
-                            if field.focused then
-                                0
-
-                            else
-                                1
-                        , bottom =
-                            if field.focused then
-                                0
-
-                            else
-                                1
-                        , left =
-                            if field.focused then
-                                13
-
-                            else
-                                14
-                        , right =
-                            if field.focused then
-                                13
-
-                            else
-                                14
-                        }
+                    [ Element.paddingXY 13 0
                     ]
 
         background =
@@ -246,6 +235,7 @@ text attrs field theme =
     Element.column [] <|
         [ Input.text
             (Theme.fontToAttributes theme.typescale.subtitle1
+                ++ borders
                 ++ [ Element.height <| Element.px 56
                    , Element.inFront label
                    , Element.htmlAttribute
@@ -256,7 +246,6 @@ text attrs field theme =
                    ]
                 ++ padding
                 ++ attrs
-                ++ borders
                 ++ background
             )
             { onChange = field.onChange
