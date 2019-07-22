@@ -15,7 +15,12 @@ type alias ButtonRowFn a msg =
 
 viewButtonRow : Theme a -> ButtonRowFn a String -> Element.Length -> List (Theme a -> Element String) -> Element String
 viewButtonRow theme view width buttons =
-    view [ Border.width 1, Element.width width ] buttons
+    view
+        [ Border.width 1
+        , Border.dashed
+        , Element.width width
+        ]
+        buttons
         |> render theme
 
 
