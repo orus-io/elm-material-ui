@@ -267,6 +267,7 @@ text attrs field theme =
                             "transition"
                             "border 0.15s, background 0.15s, padding 0.15s"
                         )
+                   , Element.htmlAttribute (Html.Attributes.style "flex" "1")
                    , Font.color
                         (if field.state == Disabled then
                             Theme.setAlpha 0.7 theme.color.onSurface
