@@ -15,6 +15,7 @@ module MaterialUI.Theme exposing
     , setAlpha
     , shapeToAttributes
     , toElementColor
+    , transparent
     )
 
 import Color
@@ -23,6 +24,11 @@ import Element.Background
 import Element.Border
 import Element.Font
 import MaterialColor
+
+
+transparent : Element.Color
+transparent =
+    Element.rgba255 0 0 0 0
 
 
 toElementColor : Color.Color -> Element.Color
