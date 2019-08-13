@@ -109,24 +109,27 @@ radio :
     -> Theme a
     -> Element msg
 radio attrs props theme =
-    Input.radio ([ Element.spacing 8 ] ++ attrs)
-        { onChange = props.onChange
-        , options =
-            props.options
-                |> List.map
-                    (\(Option optionValue optionLabel) ->
-                        Input.optionWith optionValue <| radioOption optionLabel props.color theme
-                    )
-        , selected = props.selected
-        , label =
-            if props.hideLabel then
-                Input.labelHidden props.label
+    Element.column
+        [ Element.spacing 4
+        , Element.paddingXY 0 4
+        ]
+        [ if not props.hideLabel then
+            Element.el
+                (Theme.fontToAttributes theme.typescale.caption)
+                (Element.text props.label)
 
-            else
-                Input.labelAbove
-                    (Theme.fontToAttributes theme.typescale.caption
-                        ++ [ Element.moveUp 8 ]
-                    )
-                <|
-                    Element.text props.label
-        }
+          else
+            Element.none
+        , Input.radio ([ Element.spacing 8 ] ++ attrs)
+            { onChange = props.onChange
+            , options =
+                props.options
+                    |> List.map
+                        (\(Option optionValue optionLabel) ->
+                            Input.optionWith optionValue <| radioOption optionLabel props.color theme
+                        )
+            , selected = props.selected
+            , label =
+                Input.labelHidden props.label
+            }
+        ]

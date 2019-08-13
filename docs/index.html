@@ -16900,22 +16900,6 @@ var orus_io$elm_material_ui$MaterialUI$RadioTest$optionsStory = A2(
 					A2(orus_io$elm_material_ui$MaterialUI$Radio$option, 'I', 'Option I')
 				]))
 		]));
-var mdgriffith$elm_ui$Internal$Flag$moveY = mdgriffith$elm_ui$Internal$Flag$flag(26);
-var mdgriffith$elm_ui$Internal$Model$MoveY = function (a) {
-	return {$: 1, a: a};
-};
-var mdgriffith$elm_ui$Element$moveUp = function (y) {
-	return A2(
-		mdgriffith$elm_ui$Internal$Model$TransformComponent,
-		mdgriffith$elm_ui$Internal$Flag$moveY,
-		mdgriffith$elm_ui$Internal$Model$MoveY(-y));
-};
-var mdgriffith$elm_ui$Element$Input$Above = 2;
-var mdgriffith$elm_ui$Element$Input$Label = F3(
-	function (a, b, c) {
-		return {$: 0, a: a, b: b, c: c};
-	});
-var mdgriffith$elm_ui$Element$Input$labelAbove = mdgriffith$elm_ui$Element$Input$Label(2);
 var mdgriffith$elm_ui$Element$Input$HiddenLabel = function (a) {
 	return {$: 1, a: a};
 };
@@ -17459,37 +17443,43 @@ var orus_io$elm_material_ui$MaterialUI$Radio$radioOption = F4(
 var orus_io$elm_material_ui$MaterialUI$Radio$radio = F3(
 	function (attrs, props, theme) {
 		return A2(
-			mdgriffith$elm_ui$Element$Input$radio,
-			_Utils_ap(
-				_List_fromArray(
-					[
-						mdgriffith$elm_ui$Element$spacing(8)
-					]),
-				attrs),
-			{
-				be: props.d8 ? mdgriffith$elm_ui$Element$Input$labelHidden(props.be) : A2(
-					mdgriffith$elm_ui$Element$Input$labelAbove,
+			mdgriffith$elm_ui$Element$column,
+			_List_fromArray(
+				[
+					mdgriffith$elm_ui$Element$spacing(4),
+					A2(mdgriffith$elm_ui$Element$paddingXY, 0, 4)
+				]),
+			_List_fromArray(
+				[
+					(!props.d8) ? A2(
+					mdgriffith$elm_ui$Element$el,
+					orus_io$elm_material_ui$MaterialUI$Theme$fontToAttributes(theme.a$.dJ),
+					mdgriffith$elm_ui$Element$text(props.be)) : mdgriffith$elm_ui$Element$none,
+					A2(
+					mdgriffith$elm_ui$Element$Input$radio,
 					_Utils_ap(
-						orus_io$elm_material_ui$MaterialUI$Theme$fontToAttributes(theme.a$.dJ),
 						_List_fromArray(
 							[
-								mdgriffith$elm_ui$Element$moveUp(8)
-							])),
-					mdgriffith$elm_ui$Element$text(props.be)),
-				cv: props.cv,
-				cw: A2(
-					elm$core$List$map,
-					function (_n0) {
-						var optionValue = _n0.a;
-						var optionLabel = _n0.b;
-						return A2(
-							mdgriffith$elm_ui$Element$Input$optionWith,
-							optionValue,
-							A3(orus_io$elm_material_ui$MaterialUI$Radio$radioOption, optionLabel, props.c, theme));
-					},
-					props.cw),
-				cS: props.cS
-			});
+								mdgriffith$elm_ui$Element$spacing(8)
+							]),
+						attrs),
+					{
+						be: mdgriffith$elm_ui$Element$Input$labelHidden(props.be),
+						cv: props.cv,
+						cw: A2(
+							elm$core$List$map,
+							function (_n0) {
+								var optionValue = _n0.a;
+								var optionLabel = _n0.b;
+								return A2(
+									mdgriffith$elm_ui$Element$Input$optionWith,
+									optionValue,
+									A3(orus_io$elm_material_ui$MaterialUI$Radio$radioOption, optionLabel, props.c, theme));
+							},
+							props.cw),
+						cS: props.cS
+					})
+				]));
 	});
 var orus_io$elm_material_ui$MaterialUI$RadioTest$viewRadio = F5(
 	function (theme, color, label, hideLabel, options) {
@@ -18004,6 +17994,16 @@ var mdgriffith$elm_ui$Element$moveRight = function (x) {
 		mdgriffith$elm_ui$Internal$Model$TransformComponent,
 		mdgriffith$elm_ui$Internal$Flag$moveX,
 		mdgriffith$elm_ui$Internal$Model$MoveX(x));
+};
+var mdgriffith$elm_ui$Internal$Flag$moveY = mdgriffith$elm_ui$Internal$Flag$flag(26);
+var mdgriffith$elm_ui$Internal$Model$MoveY = function (a) {
+	return {$: 1, a: a};
+};
+var mdgriffith$elm_ui$Element$moveUp = function (y) {
+	return A2(
+		mdgriffith$elm_ui$Internal$Model$TransformComponent,
+		mdgriffith$elm_ui$Internal$Flag$moveY,
+		mdgriffith$elm_ui$Internal$Model$MoveY(-y));
 };
 var mdgriffith$elm_ui$Element$Input$TextInputNode = function (a) {
 	return {$: 0, a: a};
