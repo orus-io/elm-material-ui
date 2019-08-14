@@ -52,9 +52,9 @@ viewTabs theme color width fixed iconpos selected onPress disabled =
         , fixed = fixed
         , iconPos = iconpos
         , tabs =
-            [ Tabs.Label "First Tab" <| Just Action.accessible
-            , Tabs.Label "Second Tab" Nothing
-            , Tabs.Label "Third Tab" <| Just Action.alarm
+            [ Tabs.label 0 "First Tab" <| Just Action.accessible
+            , Tabs.label 1 "Second Tab" Nothing
+            , Tabs.label 2 "Third Tab" <| Just Action.alarm
             ]
         }
         |> render theme

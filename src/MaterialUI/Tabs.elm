@@ -1,7 +1,7 @@
 module MaterialUI.Tabs exposing
     ( IconPosition(..)
-    , Label
     , Tabs
+    , label
     , tabs
     )
 
@@ -22,24 +22,30 @@ type IconPosition
     | OnlyIcon
 
 
-type alias Label msg =
-    { text : String
+type alias Label key msg =
+    { key : key
+    , text : String
     , icon : Maybe (Icon msg)
     }
 
 
-type alias Tabs c msg =
-    { tabs : List (Label msg)
-    , selected : Maybe Int
-    , color : Theme.Color c
+label : option -> String -> Maybe (Icon msg) -> Label option msg
+label =
+    Label
+
+
+type alias Tabs color key msg =
+    { tabs : List (Label key msg)
+    , selected : Maybe key
+    , color : Theme.Color color
     , fixed : Bool
-    , onPress : Maybe (Int -> msg)
+    , onPress : Maybe (key -> msg)
     , disabled : Bool
     , iconPos : IconPosition
     }
 
 
-tabs : List (Element.Attribute msg) -> Tabs a msg -> Theme.Theme a -> Element msg
+tabs : List (Element.Attribute msg) -> Tabs color key msg -> Theme.Theme color -> Element msg
 tabs attrs tabsdef theme =
     Element.row
         (attrs
@@ -58,11 +64,11 @@ tabs attrs tabsdef theme =
                )
         )
     <|
-        List.indexedMap (\index tabdef -> tab tabsdef index tabdef theme) tabsdef.tabs
+        List.map (\tabdef -> tab tabsdef tabdef theme) tabsdef.tabs
 
 
-tab : Tabs c msg -> Int -> Label msg -> Theme.Theme c -> Element msg
-tab tabsdef index label theme =
+tab : Tabs color key msg -> Label key msg -> Theme.Theme color -> Element msg
+tab tabsdef tabLabel theme =
     let
         color =
             Theme.getColor tabsdef.color theme
@@ -74,7 +80,7 @@ tab tabsdef index label theme =
             Theme.getColor tabsdef.color theme
 
         selected =
-            tabsdef.selected == Just index
+            tabsdef.selected == Just tabLabel.key
 
         mouseDownBgColor =
             Theme.getColor tabsdef.color theme |> Theme.setAlpha 0.2
@@ -164,18 +170,18 @@ tab tabsdef index label theme =
                         tabsdef.color
                     )
                     tabsdef.iconPos
-                    label
+                    tabLabel
             , onPress =
                 if tabsdef.disabled then
                     Nothing
 
                 else
-                    Maybe.map (\p -> p index) tabsdef.onPress
+                    Maybe.map ((|>) tabLabel.key) tabsdef.onPress
             }
 
 
-makeLabel : Theme.Theme a -> Theme.Color a -> IconPosition -> Label msg -> Element msg
-makeLabel theme color iconPos label =
+makeLabel : Theme.Theme a -> Theme.Color a -> IconPosition -> Label key msg -> Element msg
+makeLabel theme color iconPos tabLabel =
     let
         textEl text =
             Element.text <|
@@ -184,21 +190,21 @@ makeLabel theme color iconPos label =
     Element.el
         [ Element.centerX
         , Element.centerY
-        , Region.description label.text
+        , Region.description tabLabel.text
         ]
     <|
-        case ( iconPos, label.icon ) of
+        case ( iconPos, tabLabel.icon ) of
             ( TopIcon, Nothing ) ->
                 Element.column
                     [ Element.paddingXY 0 12
                     , Element.spacing 8
                     ]
                     [ Element.el [ Element.height <| Element.px 24 ] Element.none
-                    , textEl label.text
+                    , textEl tabLabel.text
                     ]
 
             ( _, Nothing ) ->
-                textEl label.text
+                textEl tabLabel.text
 
             ( OnlyIcon, Just icon ) ->
                 Icon.view theme color 24 icon
@@ -208,7 +214,7 @@ makeLabel theme color iconPos label =
                     [ Element.spacing 8
                     ]
                     [ Icon.view theme color 24 icon
-                    , textEl label.text
+                    , textEl tabLabel.text
                     ]
 
             ( TopIcon, Just icon ) ->
@@ -217,5 +223,5 @@ makeLabel theme color iconPos label =
                     , Element.spacing 8
                     ]
                     [ Element.el [ Element.centerX ] <| Icon.view theme color 24 icon
-                    , textEl label.text
+                    , textEl tabLabel.text
                     ]
