@@ -16,28 +16,25 @@ import MaterialUI.TestUtils exposing (ThemeList, themeStory, wrapView)
 import MaterialUI.Theme as Theme exposing (Theme)
 
 
-viewCard : Theme a -> List (Card.Element String) -> Bool -> Element String
-viewCard theme elements elevated =
-    Card.card { elevated = elevated, elements = elements } theme
+viewCard : Theme a -> Element String -> Bool -> Element String
+viewCard theme body elevated =
+    Card.card [] { elevated = elevated, body = body } theme
         |> wrapView theme
 
 
-cardElementsStory : Story (List (Card.Element String))
-cardElementsStory =
-    Story "Elements" []
-        |> Story.addOption "Empty"
-            [ Card.Header
-                { text = "Title does here"
-                , thumbnail = Nothing
-                }
-            ]
+cardBodyStory : Story (Element String)
+cardBodyStory =
+    Story "Body"
+        [ ( "Empty", Element.none )
+        , ( "Text", Element.text "Some text for the card" )
+        ]
 
 
 book : ThemeList a -> Book
 book themes =
     intoBook "Card" identity viewCard
         |> addStory (themeStory themes)
-        |> addStory cardElementsStory
+        |> addStory cardBodyStory
         |> addStory
             (Story "Elevated" []
                 |> Story.addOption "True" True

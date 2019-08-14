@@ -1,33 +1,24 @@
-module MaterialUI.Card exposing (Card, CardHeader, Element(..), card)
+module MaterialUI.Card exposing (Card, card)
 
-import Element
+import Element exposing (Attribute, Element)
 import Element.Background as Background
 import Element.Border as Border
+import Element.Font as Font
 import MaterialUI.Theme as Theme exposing (Theme)
 import MaterialUI.Thumbnail as Thumbnail exposing (Thumbnail)
 
 
-type alias CardHeader msg =
-    { text : String
-    , thumbnail : Maybe (Thumbnail msg)
-    }
-
-
-type Element msg
-    = Header (CardHeader msg)
-    | Media
-
-
 type alias Card msg =
     { elevated : Bool
-    , elements : List (Element msg)
+    , body : Element msg
     }
 
 
-card : Card msg -> Theme a -> Element.Element msg
-card c theme =
-    Element.column
+card : List (Attribute msg) -> Card msg -> Theme a -> Element.Element msg
+card attrs c theme =
+    Element.el
         ([ Background.color theme.color.surface
+         , Font.color theme.color.onSurface
          , Element.shrink |> Element.minimum 32 |> Element.width
          , Element.shrink |> Element.minimum 32 |> Element.height
          ]
@@ -46,5 +37,6 @@ card c theme =
                     , Border.width 1
                     ]
                )
+            ++ attrs
         )
-        []
+        c.body
