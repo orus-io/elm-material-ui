@@ -3,6 +3,7 @@ module MaterialUI.Tabs exposing
     , Tabs
     , label
     , tabs
+    , withLink
     )
 
 import Element exposing (Element)
@@ -26,12 +27,18 @@ type alias Label key msg =
     { key : key
     , text : String
     , icon : Maybe (Icon msg)
+    , url : Maybe String
     }
 
 
-label : option -> String -> Maybe (Icon msg) -> Label option msg
-label =
-    Label
+label : key -> String -> Maybe (Icon msg) -> Label key msg
+label key text icon =
+    Label key text icon Nothing
+
+
+withLink : String -> Label key msg -> Label key msg
+withLink url l =
+    { l | url = Just url }
 
 
 type alias Tabs color key msg =
@@ -100,18 +107,9 @@ tab tabsdef tabLabel theme =
             )
                 |> Element.minimum 90
                 |> Element.maximum 360
-    in
-    -- add a container element so the focused styles don't leak to the sibblings
-    Element.el
-        [ if tabsdef.fixed then
-            Element.width Element.fill
 
-          else
-            Element.width Element.shrink
-        ]
-    <|
-        Input.button
-            (Theme.fontToAttributes theme.typescale.button
+        attributes =
+            Theme.fontToAttributes theme.typescale.button
                 ++ [ Element.width width
                    , Element.height <|
                         Element.px
@@ -160,24 +158,44 @@ tab tabsdef tabLabel theme =
                                     ]
                                )
                    )
-            )
-            { label =
-                makeLabel theme
-                    (if tabsdef.disabled || not selected then
-                        Theme.Custom disabledColor
 
-                     else
-                        tabsdef.color
-                    )
-                    tabsdef.iconPos
-                    tabLabel
-            , onPress =
-                if tabsdef.disabled then
-                    Nothing
+        labelEl =
+            makeLabel theme
+                (if tabsdef.disabled || not selected then
+                    Theme.Custom disabledColor
 
-                else
-                    Maybe.map ((|>) tabLabel.key) tabsdef.onPress
-            }
+                 else
+                    tabsdef.color
+                )
+                tabsdef.iconPos
+                tabLabel
+    in
+    -- add a container element so the focused styles don't leak to the sibblings
+    Element.el
+        [ if tabsdef.fixed then
+            Element.width Element.fill
+
+          else
+            Element.width Element.shrink
+        ]
+    <|
+        case tabLabel.url of
+            Just url ->
+                Element.link attributes
+                    { label = labelEl
+                    , url = url
+                    }
+
+            Nothing ->
+                Input.button attributes
+                    { label = labelEl
+                    , onPress =
+                        if tabsdef.disabled then
+                            Nothing
+
+                        else
+                            Maybe.map ((|>) tabLabel.key) tabsdef.onPress
+                    }
 
 
 makeLabel : Theme.Theme a -> Theme.Color a -> IconPosition -> Label key msg -> Element msg

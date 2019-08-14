@@ -16,6 +16,7 @@ import Element exposing (Element)
 import Element.Border as Border
 import MaterialUI.Icon exposing (Icon)
 import MaterialUI.Icons.Action as Action
+import MaterialUI.Icons.Content as Content
 import MaterialUI.Tabs as Tabs
 import MaterialUI.TestUtils
     exposing
@@ -55,6 +56,8 @@ viewTabs theme color width fixed iconpos selected onPress disabled =
             [ Tabs.label 0 "First Tab" <| Just Action.accessible
             , Tabs.label 1 "Second Tab" Nothing
             , Tabs.label 2 "Third Tab" <| Just Action.alarm
+            , Tabs.label 4 "Fourth (link)" (Just Content.link)
+                |> Tabs.withLink "#somelink"
             ]
         }
         |> render theme
