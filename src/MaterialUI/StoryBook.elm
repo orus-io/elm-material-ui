@@ -5,6 +5,7 @@ import MaterialUI.ButtonRowTest
 import MaterialUI.ButtonTest
 import MaterialUI.CardTest
 import MaterialUI.RadioTest
+import MaterialUI.TableTest
 import MaterialUI.TabsTest
 import MaterialUI.TextFieldTest
 import MaterialUI.Theme exposing (Theme)
@@ -28,6 +29,7 @@ shelf themes =
             (Bibliopola.emptyShelf "Containers"
                 |> addBook (MaterialUI.CardTest.book themes)
                 |> addBook (MaterialUI.ButtonRowTest.book themes)
+                |> addBook (MaterialUI.TableTest.book themes)
             )
 
 
